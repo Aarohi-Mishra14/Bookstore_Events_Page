@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bookstore Events Page | Independent Bookstore Literary Calendar</title>
+  <meta name="description" content="Browse ongoing exhibitions, upcoming author signings, kids story hours, and popular book fairs at your independent bookstore." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-icon" aria-hidden="true"><i class="fa-solid fa-book-open"></i></span>
+        <div class="brand-text">
+          <h1>Bookstore Events Page</h1>
+          <p>Independent Bookstore Literary Calendar</p>
+        </div>
+      </div>
+      <button type="button" id="openAddEventBtn" class="btn btn-dark" aria-haspopup="dialog" aria-controls="addEventModal">
+        <i class="fa-solid fa-plus" aria-hidden="true"></i>
+        <span>Add Event</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="hero-inner">
+        <h2 id="hero-heading">Discover Literary Gatherings, Readings &amp; Book Fairs</h2>
+        <p class="hero-text">
+          Welcome to the Bookstore Events Page. Browse ongoing exhibitions,
+          upcoming author signings, kids story hours and popular book fairs all in one place.
+        </p>
+
+        <form class="search-bar" id="searchForm" role="search" aria-label="Search and filter events">
+          <div class="search-field">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <label for="searchInput" class="visually-hidden">Search by event title, author, host, or location</label>
+            <input
+              type="text"
+              id="searchInput"
+              name="search"
+              placeholder="Search by event title, author, host, or location"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="filter-field">
+            <i class="fa-solid fa-filter" aria-hidden="true"></i>
+            <label for="categorySelect" class="visually-hidden">Filter by category</label>
+            <select id="categorySelect" name="category">
+              <option value="all">All Categories</option>
+              <option value="Book Fair">Book Fair</option>
+              <option value="Author Reading">Author Reading</option>
+              <option value="Book Club">Book Club</option>
+              <option value="Kids Story Time">Kids Story Time</option>
+              <option value="Workshop">Workshop</option>
+              <option value="Signing">Signing</option>
+            </select>
+          </div>
+
+          <div class="count-field" aria-live="polite">
+            <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+            <span id="eventsCountLabel">8 Events Listed</span>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <nav class="tabs-nav" aria-label="Event category tabs">
+      <div class="tabs-viewport" id="tabsViewport" tabindex="0" aria-label="Scrollable event category tabs">
+        <div class="tabs-list" id="tabsList" role="tablist">
+          <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="eventGroups" tabindex="0" data-tab="all" id="tab-all">
+            <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
+            All Events <span class="tab-count" id="count-all">8</span>
+          </button>
+          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="eventGroups" tabindex="-1" data-tab="ongoing" id="tab-ongoing">
+            <i class="fa-solid fa-bolt" aria-hidden="true"></i>
+            Ongoing Events <span class="tab-count" id="count-ongoing">3</span>
+          </button>
+          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="eventGroups" tabindex="-1" data-tab="upcoming" id="tab-upcoming">
+            <i class="fa-regular fa-clock" aria-hidden="true"></i>
+            Upcoming Events <span class="tab-count" id="count-upcoming">3</span>
+          </button>
+          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="eventGroups" tabindex="-1" data-tab="popular" id="tab-popular">
+            <i class="fa-solid fa-fire" aria-hidden="true"></i>
+            Popular Events <span class="tab-count" id="count-popular">5</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <section class="events-section" aria-label="Events list">
+
+      <div id="loadingIndicator" class="loading-indicator" role="status" aria-live="polite" hidden>
+        <span class="spinner" aria-hidden="true"></span>
+        Loading events&hellip;
+      </div>
+
+      <div id="emptyState" class="empty-state" hidden>
+        <i class="fa-regular fa-folder-open" aria-hidden="true"></i>
+        <h3>No data found</h3>
+        <p>Try a different search term or category filter.</p>
+        <button type="button" id="clearFiltersBtn" class="btn btn-outline">
+          <i class="fa-solid fa-filter-circle-xmark" aria-hidden="true"></i>
+          Clear Filters
+        </button>
+      </div>
+
+      <div id="eventGroups" role="tabpanel" aria-labelledby="tab-all" tabindex="0"></div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+
+      <div class="footer-col">
+        <div class="footer-brand">
+          <span class="brand-icon" aria-hidden="true"><i class="fa-solid fa-book-open"></i></span>
+          <h2>Bookstore Events</h2>
+        </div>
+        <p>
+          Your neighborhood independent bookstore, hosting author readings, local book
+          clubs, workshops and literary fairs for over 15 years.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Visit Our Store</h3>
+        <ul class="footer-info-list">
+          <li><i class="fa-solid fa-location-dot" aria-hidden="true"></i> 100 Main Street, Suite 400 &bull; City, State</li>
+          <li>
+            <i class="fa-regular fa-clock" aria-hidden="true"></i>
+            <span>Mon&ndash;Sat: 9:00 AM &ndash; 8:00 PM<br /><small>Sun: 10:00 AM &ndash; 5:00 PM</small></span>
+          </li>
+          <li><i class="fa-solid fa-phone" aria-hidden="true"></i> <a href="tel:+15550123456">(555) 012-3456</a></li>
+          <li><i class="fa-regular fa-envelope" aria-hidden="true"></i> <a href="mailto:contact@bookstore-events.com">contact@bookstore-events.com</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Quick Links</h3>
+        <ul class="footer-links-list">
+          <li><a href="#main-content">Bookstore Events Board</a></li>
+          <li><a href="#" id="footerAddEventLink">Add New Event</a></li>
+          <li><a href="mailto:contact@bookstore-events.com">Contact Programming Team</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-heading">Follow Us</h3>
+        <p>Stay connected with our literary community across social channels:</p>
+        <div class="social-icons">
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter" aria-hidden="true"></i></a>
+          <a href="#" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
+        </div>
+        <p class="social-note">Follow our social channels for daily event announcements!</p>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; <span id="currentYear">2026</span> Independent Bookstore Events. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div class="modal-overlay" id="detailsModalOverlay" hidden>
+    <div class="modal details-modal" id="detailsModal" role="dialog" aria-modal="true" aria-labelledby="detailsModalTitle">
+      <button type="button" class="modal-close" id="detailsModalClose" aria-label="Close event details">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+
+      <div class="modal-hero" id="detailsModalHero">
+        <div class="modal-hero-badges" id="detailsModalBadges"></div>
+        <h2 id="detailsModalTitle"></h2>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-info-grid">
+          <div class="modal-info-item">
+            <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+            <div>
+              <span class="modal-info-label">Date</span>
+              <span class="modal-info-value" id="detailsModalDate"></span>
+            </div>
+          </div>
+          <div class="modal-info-item">
+            <i class="fa-regular fa-clock" aria-hidden="true"></i>
+            <div>
+              <span class="modal-info-label">Time</span>
+              <span class="modal-info-value" id="detailsModalTime"></span>
+            </div>
+          </div>
+          <div class="modal-info-item">
+            <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+            <div>
+              <span class="modal-info-label">Location / Venue</span>
+              <span class="modal-info-value" id="detailsModalLocation"></span>
+            </div>
+          </div>
+          <div class="modal-info-item">
+            <i class="fa-regular fa-user" aria-hidden="true"></i>
+            <div>
+              <span class="modal-info-label">Host / Speaker</span>
+              <span class="modal-info-value" id="detailsModalHost"></span>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="modal-subheading">About This Event</h3>
+        <p class="modal-description" id="detailsModalDescription"></p>
+
+        <div class="seat-panel">
+          <div class="seat-panel-info">
+            <span class="seat-panel-icon" aria-hidden="true"><i class="fa-solid fa-user-group"></i></span>
+            <div>
+              <span class="modal-info-label">Seat Capacity &amp; Availability</span>
+              <span class="modal-info-value" id="detailsModalSeats"></span>
+            </div>
+          </div>
+          <button type="button" class="btn btn-dark" id="editEventBtn">
+            <i class="fa-solid fa-pen" aria-hidden="true"></i>
+            Edit Event
+          </button>
+        </div>
+
+        <div class="modal-footer-row">
+          <button type="button" class="btn btn-outline" id="detailsModalCloseBtn">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="addEventModalOverlay" hidden>
+    <div class="modal details-modal form-modal" id="addEventModal" role="dialog" aria-modal="true" aria-labelledby="addEventModalTitle">
+      <button type="button" class="modal-close" id="addEventModalClose" aria-label="Close event form">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+
+      <div class="modal-hero form-hero">
+        <div class="modal-hero-badges">
+          <span class="badge badge-plain" id="addEventFormBadge"><i class="fa-solid fa-plus" aria-hidden="true"></i> NEW LISTING ENTRY</span>
+        </div>
+        <h2 id="addEventModalTitle">Add New Bookstore Event</h2>
+      </div>
+
+      <div class="modal-body">
+        <form id="addEventForm" novalidate>
+
+          <div class="form-group">
+            <label for="eventTitle">Event Title <span class="required-mark">*</span></label>
+            <input type="text" id="eventTitle" name="eventTitle" placeholder="e.g. World Book Fair or An Evening with Mara Voss" required aria-required="true" />
+            <p class="field-error" id="error-eventTitle" hidden>Please enter an event title.</p>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="eventCategory">Category <span class="required-mark">*</span></label>
+              <select id="eventCategory" name="eventCategory" required aria-required="true">
+                <option value="">Select a category</option>
+                <option value="Book Fair">Book Fair</option>
+                <option value="Author Reading">Author Reading</option>
+                <option value="Book Club">Book Club</option>
+                <option value="Kids Story Time">Kids Story Time</option>
+                <option value="Workshop">Workshop</option>
+                <option value="Signing">Signing</option>
+              </select>
+              <p class="field-error" id="error-eventCategory" hidden>Please select a category.</p>
+            </div>
+
+            <div class="form-group">
+              <label for="eventTabSection">Event Tab Section <span class="required-mark">*</span></label>
+              <select id="eventTabSection" name="eventTabSection" required aria-required="true">
+                <option value="">Select a section</option>
+                <option value="ongoing">Ongoing Events</option>
+                <option value="upcoming">Upcoming Events</option>
+                <option value="popular">Popular Events</option>
+              </select>
+              <p class="field-error" id="error-eventTabSection" hidden>Please select a tab section.</p>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="eventStartDate">Start Date (e.g., 10th Jan 2026) <span class="required-mark">*</span></label>
+              <input type="text" id="eventStartDate" name="eventStartDate" placeholder="10th Jan 2026 or 2026-08-10" required aria-required="true" />
+              <p class="field-error" id="error-eventStartDate" hidden>Please enter a start date.</p>
+            </div>
+
+            <div class="form-group">
+              <label for="eventTime">Time (e.g., 11:00 AM &ndash; 8:00 PM) <span class="required-mark">*</span></label>
+              <input type="text" id="eventTime" name="eventTime" placeholder="11:00 AM - 8:00 PM" required aria-required="true" />
+              <p class="field-error" id="error-eventTime" hidden>Please enter a time.</p>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="eventCity">City / Main Location <span class="required-mark">*</span></label>
+              <input type="text" id="eventCity" name="eventCity" placeholder="e.g. New Delhi or Main Atrium" required aria-required="true" />
+              <p class="field-error" id="error-eventCity" hidden>Please enter a city or main location.</p>
+            </div>
+
+            <div class="form-group">
+              <label for="eventHost">Host / Speaker Name <span class="required-mark">*</span></label>
+              <input type="text" id="eventHost" name="eventHost" placeholder="e.g. Mara Voss or NBT Guild" required aria-required="true" />
+              <p class="field-error" id="error-eventHost" hidden>Please enter a host or speaker name.</p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="eventVenueAddress">Full Venue Address <span class="required-mark">*</span></label>
+            <input type="text" id="eventVenueAddress" name="eventVenueAddress" placeholder="e.g. Bharat Mandapam, Pragati Maidan, New Delhi 110001" required aria-required="true" />
+            <p class="field-error" id="error-eventVenueAddress" hidden>Please enter a full venue address.</p>
+          </div>
+
+          <div class="form-group">
+            <label for="eventSeats">Seat Capacity <span class="required-mark">*</span></label>
+            <input type="number" id="eventSeats" name="eventSeats" min="1" placeholder="50" required aria-required="true" />
+            <p class="field-error" id="error-eventSeats" hidden>Please enter a valid seat capacity (1 or more).</p>
+          </div>
+
+          <fieldset class="cover-style-fieldset">
+            <legend>
+              <i class="fa-regular fa-image" aria-hidden="true"></i>
+              Select Cover Image Style <span class="required-mark">*</span>
+            </legend>
+
+            <div class="cover-style-grid" id="coverStyleGrid">
+              <label class="cover-style-option">
+                <input type="radio" name="coverStyle" value="bookfair" required aria-required="true" />
+                <span class="cover-style-card" style="background-image:url('images/bookfair.jpg')">
+                  <span class="cover-style-label">Book Fair / Exhibition</span>
+                </span>
+              </label>
+              <label class="cover-style-option">
+                <input type="radio" name="coverStyle" value="authorreading" required aria-required="true" />
+                <span class="cover-style-card" style="background-image:url('images/authorreading.jpg')">
+                  <span class="cover-style-label">Author Reading</span>
+                </span>
+              </label>
+              <label class="cover-style-option">
+                <input type="radio" name="coverStyle" value="bookclub" required aria-required="true" />
+                <span class="cover-style-card" style="background-image:url('images/bookclub.jpg')">
+                  <span class="cover-style-label">Book Club Nook</span>
+                </span>
+              </label>
+              <label class="cover-style-option">
+                <input type="radio" name="coverStyle" value="kidsstory" required aria-required="true" />
+                <span class="cover-style-card" style="background-image:url('images/kidsstory.jpg')">
+                  <span class="cover-style-label">Kids Story Hour</span>
+                </span>
+              </label>
+              <label class="cover-style-option">
+                <input type="radio" name="coverStyle" value="workshop" required aria-required="true" />
+                <span class="cover-style-card" style="background-image:url('images/workshop.jpg')">
+                  <span class="cover-style-label">Bookbinding Workshop</span>
+                </span>
+              </label>
+              <label class="cover-style-option">
+                <input type="radio" name="coverStyle" value="poetry" required aria-required="true" />
+                <span class="cover-style-card" style="background-image:url('images/poetry.jpg')">
+                  <span class="cover-style-label">Poetry &amp; Acoustic Stage</span>
+                </span>
+              </label>
+              <label class="cover-style-option">
+                <input type="radio" name="coverStyle" value="indiepublishers" required aria-required="true" />
+                <span class="cover-style-card" style="background-image:url('images/indiepublishers.jpg')">
+                  <span class="cover-style-label">Indie Publishers Showcase</span>
+                </span>
+              </label>
+              <label class="cover-style-option">
+                <input type="radio" name="coverStyle" value="signing" required aria-required="true" />
+                <span class="cover-style-card" style="background-image:url('images/signing.jpg')">
+                  <span class="cover-style-label">Book Signing Event</span>
+                </span>
+              </label>
+            </div>
+            <p class="field-error" id="error-coverStyle" hidden>Please select a cover image style.</p>
+          </fieldset>
+
+          <div class="form-group">
+            <label for="eventDescription">Description <span class="required-mark">*</span></label>
+            <textarea id="eventDescription" name="eventDescription" rows="4" placeholder="Provide a detailed summary of the event..." required aria-required="true"></textarea>
+            <p class="field-error" id="error-eventDescription" hidden>Please provide a description.</p>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-outline" id="cancelAddEventBtn">Cancel</button>
+            <button type="submit" class="btn btn-dark" id="addEventSubmitBtn">
+              <i class="fa-solid fa-plus" aria-hidden="true"></i> Save Event
+            </button>
+          </div>
+
+          <p id="addEventSuccess" class="success-banner" role="status" hidden>
+            <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+            <span id="addEventSuccessText">Event saved successfully! It has been added to the calendar.</span>
+            <button type="button" id="addEventSuccessClose" class="success-banner-close" aria-label="Close and return to the events page">
+              <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
