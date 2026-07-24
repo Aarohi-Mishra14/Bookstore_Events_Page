@@ -1,6 +1,8 @@
 # Bookstore_Events_Page
 A static events board for an independent bookstore, so floor staff can look up ongoing, upcoming and popular events instead of using paper logs and Excel sheets.
 
+🔗 Live demo: https://bookstore-events-page.vercel.app
+
 ## Features
 - Ongoing / Upcoming / Popular / All events tabs
 - Search by title, author, host or location
